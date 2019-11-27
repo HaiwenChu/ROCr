@@ -1,0 +1,22 @@
+# MinEuc takes two equal-length vectors TPRS and FPRS and returns the point which is closest to perfect prediction in terms of Euclidean distance
+
+MinEuc<-function(TPR,FPR){
+      n<-length(TPR)
+      d<-NULL
+      for (i in 1:n){
+        d<-c(d,sqrt((1-TPR[i])^2+FPR[i]^2))
+      }
+      return(which.min(d))
+    }
+   
+# MaxYou returns maximum Youden index (TPR-FPR) for two equal-length vectors
+MaxYou<-function(TPR,FPR){
+      return(which.max(TPR-FPR))
+    }
+    
+# YouEuc provides both Euclidean-minimizing and Youden-maximizing indices with corresponding values of the other index.
+YouEuc<-function(TPR,FPR){
+    euc<-MinEuc(TPR,FPR)
+    you<-MaxYou(TPR,FPR)
+    return(c(euc,sqrt((1-TPR[euc])^2+FPR[euc]^2),sqrt((1-TPR[you])^2+FPR[you]^2),you,TPR[you]-FPR[you],TPR[euc]-FPR[euc]))
+  }
